@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue.js Web Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <form @submit.prevent="submitForm">
+            <label for="city">Город:</label>
+            <select id="city" v-model="selectedCity" @change="updateWorkshops">
+                <option value="">Выберите город</option>
+                <option value="city1">Город 1</option>
+                <option value="city2">Город 2</option>
+            </select>
+
+            <label for="workshop">Цех:</label>
+            <select id="workshop" v-model="selectedWorkshop" @change="updateEmployees">
+                <option value="">Выберите цех</option>
+                <option v-for="workshop in filteredWorkshops" :value="workshop">{{ workshop }}</option>
+            </select>
+
+            <label for="employee">Сотрудник:</label>
+            <select id="employee" v-model="selectedEmployee">
+                <option value="">Выберите сотрудника</option>
+                <option v-for="employee in filteredEmployees" :value="employee">{{ employee }}</option>
+            </select>
+
+            <label for="brigade">Бригада:</label>
+            <select id="brigade" v-model="selectedBrigade">
+                <option value="">Выберите бригаду</option>
+                <option v-for="brigade in brigades" :value="brigade">{{ brigade }}</option>
+            </select>
+
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                selectedCity: "",
+                selectedWorkshop: "",
+                selectedEmployee: "",
+                selectedBrigade: "",
+                brigades: [],
+                cities: {
+                    city1: ["Цех 1", "Цех 2", "Цех 3"],
+                    city2: ["Цех A", "Цех B", "Цех C"]
+                },
+                workshops: {
+                    "Цех 1": ["Сотрудник 1", "Сотрудник 2", "Сотрудник 3"],
+                    "Цех 2": ["Сотрудник 4", "Сотрудник 5", "Сотрудник 6"],
+                    "Цех 3": ["Сотрудник 7", "Сотрудник 8", "Сотрудник 9"],
+                    "Цех A": ["Сотрудник 10", "Сотрудник 11", "Сотрудник 12"],
+                    "Цех B": ["Сотрудник 13", "Сотрудник 14", "Сотрудник 15"],
+                    "Цех C": ["Сотрудник 16", "Сотрудник 17", "Сотрудник 18"],
+                }
+            },
+            computed: {
+                filteredWorkshops: function () {
+                    return this.selectedCity ? this.cities[this.selectedCity] : [];
+                },
+                filteredEmployees: function () {
+                    return this.selectedWorkshop ? this.workshops[this.selectedWorkshop] : [];
+                }
+            },
+            methods: {
+                updateWorkshops: function () {
+                    this.selectedWorkshop = "";
+                    this.selectedEmployee = "";
+                    this.selectedBrigade = "";
+                },
+                updateEmployees: function () {
+                    this.selectedEmployee = "";
+                    this.selectedBrigade = "";
+                },
+                updateBrigade: function () {
+                    var now = new Date();
+                    var hours = now.getHours();
+                    if (hours >= 8 && hours < 20) {
+                        this.brigades = ["Первая бригада"];
+                    } else {
+                        this.brigades = ["Вторая бригада"];
+                    }
+                },
+                submitForm: function () {
+                    document.cookie = "city=" + this.selectedCity + "; expires=Thu, 18 Oct 2024 12:00:00 UTC";
+                    document.cookie = "workshop=" + this.selectedWorkshop + "; expires=Thu, 18 Oct 2024 12:00:00 UTC";
+                    document.cookie = "employee=" + this.selectedEmployee + "; expires=Thu, 18 Oct 2024 12:00:00 UTC";
+                    document.cookie = "brigade=" + this.selectedBrigade + "; expires=Thu, 18 Oct 2024 12:00:00 UTC";
+                    alert("Форма отправлена и значения сохранены в Cookie!");
+                }
+            },
+            mounted: function () {
+                var cookies = document.cookie.split("; ");
+                for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split("=");
+                
+                if (cookie[0] === "city") {
+                    this.selectedCity = cookie[1];
+                }
+                if (cookie[0] === "workshop") {
+                    this.selectedWorkshop = cookie[1];
+                }
+                if (cookie[0] === "employee") {
+                    this.selectedEmployee = cookie[1];
+                }
+                if (cookie[0] === "brigade") {
+                    this.selectedBrigade = cookie[1];
+                }
+            }
+            this.updateBrigade(); 
+        }
+    });
+</script>
