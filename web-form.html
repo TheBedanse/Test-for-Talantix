@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Form</title>
+</head>
+<body>
+    <form id="myForm">
+        <label for="city">Город:</label>
+        <select id="city" onchange="updateWorkshops()">
+            <option value="">Выберите город</option>
+            <option value="city1">Город 1</option>
+            <option value="city2">Город 2</option>
+        </select>
+
+        <label for="workshop">Цех:</label>
+        <select id="workshop" onchange="updateEmployees()">
+            <option value="">Выберите цех</option>
+        </select>
+
+        <label for="employee">Сотрудник:</label>
+        <select id="employee">
+            <option value="">Выберите сотрудника</option>
+        </select>
+
+        <label for="brigade">Бригада:</label>
+        <select id="brigade">
+            <option value="">Выберите бригаду</option>
+        </select>
+    </form>
+    <script>
+        function updateWorkshops() {
+            var citySelect = document.getElementById("city");
+            var workshopSelect = document.getElementById("workshop");
+
+            while (workshopSelect.options.length > 0) {
+                workshopSelect.options.remove(0);
+            }
+
+            var selectedCity = citySelect.value;
+
+            if (selectedCity === "city1") {
+                var workshops = ["Цех 1", "Цех 2", "Цех 3"];
+            } else if (selectedCity === "city2") {
+                var workshops = ["Цех A", "Цех B", "Цех C"];
+            } else {
+                var workshops = [];
+            }
+
+            for (var i = 0; i < workshops.length; i++) {
+                var option = document.createElement("option");
+                option.text = workshops[i];
+                workshopSelect.add(option);
+            }
+
+            updateEmployees();
+        }
+
+        function updateEmployees() {
+            var workshopSelect = document.getElementById("workshop");
+            var employeeSelect = document.getElementById("employee");
+
+            while (employeeSelect.options.length > 0) {
+                employeeSelect.options.remove(0);
+            }
+
+            var selectedWorkshop = workshopSelect.value;
+
+            if (selectedWorkshop === "Цех 1") {
+                var employees = ["Сотрудник 1", "Сотрудник 2", "Сотрудник 3"];
+            } else if (selectedWorkshop === "Цех 2") {
+                var employees = ["Сотрудник 4", "Сотрудник 5", "Сотрудник 6"];
+            } else if (selectedWorkshop === "Цех 3") {
+                var employees = ["Сотрудник 7", "Сотрудник 8", "Сотрудник 9"];
+            } else if (selectedWorkshop === "Цех A") {
+                var employees = ["Сотрудник 10", "Сотрудник 11", "Сотрудник 12"];
+            } else if (selectedWorkshop === "Цех B") {
+                var employees = ["Сотрудник 13", "Сотрудник 14", "Сотрудник 15"];
+            } else if (selectedWorkshop === "Цех C") {
+                var employees = ["Сотрудник 16", "Сотрудник 17", "Сотрудник 18"];
+            } else {
+                var employees = [];
+            }
+
+            for (var i = 0; i < employees.length; i++) {
+                var option = document.createElement("option");
+                option.text = employees[i];
+                employeeSelect.add(option);
+            }
+            updateBrigade();
+        }
+        
+        function updateBrigade() {
+            var now = new Date();
+            var hours = now.getHours();
+            var brigadeSelect = document.getElementById("brigade");
+            
+            while (brigadeSelect.options.length > 0) {
+                brigadeSelect.options.remove(0);
+            }
+            
+            if (hours >= 8 && hours < 20) {
+                var brigades = ["Первая бригада"];
+            } else {
+                var brigades = ["Вторая бригада"];
+            }
+            
+            for (var i = 0; i < brigades.length; i++) {
+                var option = document.createElement("option");
+                option.text = brigades[i];
+                brigadeSelect.add(option);
+            }
+        }
+    </script>
+</body>
+</html>
